@@ -1,20 +1,24 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/FirebaseConfig';
 
 type Props = {
     navigation: NavigationProp<any>;
 };
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        // Implement login logic
-        console.log('Login pressed');
-        // Navigate to HomeScreen after login
-        navigation.navigate('Home');
+    const handleLogin = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigation.navigate('Home');
+        } catch (error) {
+            Alert.alert('Login Failed', error.message);
+        }
     };
 
     return (
@@ -22,9 +26,9 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.title}>Login</Text>
             <TextInput
                 style={styles.input}
-                placeholder="Username"
-                value={username}
-                onChangeText={setUsername}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
             />
             <TextInput
                 style={styles.input}
@@ -34,6 +38,11 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 secureTextEntry
             />
             <Button title="Login" onPress={handleLogin} />
+            <Button 
+                title="Register" 
+                onPress={() => navigation.navigate('Registration')}
+                color="#841584"
+            />
         </View>
     );
 };

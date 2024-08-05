@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../config/FirebaseConfig';
 
 type Props = {
     navigation: NavigationProp<any>;
@@ -10,9 +12,13 @@ const RegistrationScreen: React.FC<Props> = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleRegister = () => {
-        // Implement registration logic
-        console.log('Register pressed');
+    const handleRegister = async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password);
+            navigation.navigate('Home');
+        } catch (error) {
+            Alert.alert('Registration Failed', error.message);
+        }
     };
 
     return (
