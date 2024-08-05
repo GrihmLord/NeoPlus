@@ -1,62 +1,23 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCTkJOgBsjHrZz1OvmPaEb3_MFQLXSiufY",
-  authDomain: "prjctlazrus.firebaseapp.com",
-  projectId: "prjctlazrus",
-  storageBucket: "prjctlazrus.appspot.com",
-  messagingSenderId: "793985928839",
-  appId: "1:793985928839:web:50ab3faad3037e2d9c3222",
-  measurementId: "G-62WCEKB4P3"
+  apiKey: "AIzaSyB0MlTUNr2r_hSL8ZPx_7uDsT9O4D47Gdw",
+  authDomain: "neoplus-8554c.firebaseapp.com",
+  projectId: "neoplus-8554c",
+  storageBucket: "neoplus-8554c.appspot.com",
+  messagingSenderId: "787047845402",
+  appId: "1:787047845402:web:90256483f2ba3534c6cba3",
+  measurementId: "G-L2XQM5LJ78"
 };
 
 // Initialize Firebase
-let app;
-let analytics;
-try {
-  app = initializeApp(firebaseConfig);
-  analytics = getAnalytics(app);
-} catch (error) {
-  console.error("Firebase initialization error", error);
-}
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
-export default app;
-
-// Path: functions/modules/notifications.js
-const { onRequest } = require("firebase-functions/v2/https");
-
-exports.sendNotification = onRequest((request, response) => {
-
-    // Logic to send notifications
-}
-);
-
-// Path: functions/modules/dataProcessing.js
-const { onRequest } = require("firebase-functions/v2/https");
-
-exports.processData = onRequest((request, response) => {
-    // Logic for data processing
-}
-);
-
-// Path: functions/modules/notifications.js
-const { onRequest } = require("firebase-functions/v2/https");
-
-exports.sendNotification = onRequest((request, response) => {
-    // Logic to send notifications
-}
-);
-
-// Path: functions/modules/dataProcessing.js
-const { onRequest } = require("firebase-functions/v2/https");
-
-exports.processData = onRequest((request, response) => {
-    // Logic for data processing
-}
-);
-
-// Path: functions/modules/notifications.js
-const { onRequest } = require("firebase-functions/v2/https");
+export { app, analytics };

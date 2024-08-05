@@ -2,7 +2,11 @@
 import React from 'react';
 import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
 
-const HomeScreen = ({ navigation }) => {
+import { NavigationProp } from '@react-navigation/native';
+
+// ...
+
+const HomeScreen = ({ navigation }: { navigation: NavigationProp<any> }) => {
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Welcome to Our App!</Text>

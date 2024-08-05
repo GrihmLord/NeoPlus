@@ -17,23 +17,23 @@ import { RootStackParamList } from './Navigation/types';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App: React.FC = () => {
-return (
-    <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Dashboard" component={DashboardScreen} />
-        <Stack.Screen name="Notifications" component={NotificationsScreen} />
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="AchievementDetail" component={AchievementDetailScreen} />
-        <Stack.Screen name="ContentDetail" component={ContentDetailScreen} />
-        <Stack.Screen name="CourseDetails" component={CourseDetailsScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-        <Stack.Screen name="UserProfile" component={UserProfileScreen} />
-    </Stack.Navigator>
-    </NavigationContainer>
-);
+    return (
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Dashboard" component={DashboardScreen} />
+                <Stack.Screen name="Notifications" component={NotificationsScreen} />
+                <Stack.Screen name="Settings" component={SettingsScreen} />
+                <Stack.Screen name="AchievementDetail" component={AchievementDetailScreen} />
+                <Stack.Screen name="ContentDetail" component={ContentDetailScreen} />
+                <Stack.Screen name="CourseDetails" component={CourseDetailsScreen} />
+                <Stack.Screen name="Profile" component={ProfileScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 };
 
 export default App;

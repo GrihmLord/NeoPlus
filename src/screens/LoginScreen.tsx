@@ -1,14 +1,20 @@
-// Path: src/screens/LoginScreen.js
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 
-const LoginScreen = ({ navigation }) => {
+type Props = {
+    navigation: NavigationProp<any>;
+};
+
+const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
         // Implement login logic
         console.log('Login pressed');
+        // Navigate to HomeScreen after login
+        navigation.navigate('Home');
     };
 
     return (

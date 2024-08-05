@@ -1,8 +1,12 @@
-// Path: src/screens/RegistrationScreen.js
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 
-const RegistrationScreen = ({ navigation }) => {
+type Props = {
+    navigation: NavigationProp<any>;
+};
+
+const RegistrationScreen: React.FC<Props> = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

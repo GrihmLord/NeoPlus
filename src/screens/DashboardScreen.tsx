@@ -1,29 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-    View, Text, StyleSheet, ScrollView, ActivityIndicator,
-    TouchableOpacity, RefreshControl, ProgressViewIOS, ProgressBarAndroid, Platform, Button
+    View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, Platform, Button,
+    ProgressBarAndroid
 } from 'react-native';
+import { ProgressBarAndroidProps } from '@react-native-community/progress-bar-android';
+import { ProgressView } from '@react-native-community/progress-view';
+import { NavigationScreenProp, NavigationState } from 'react-navigation';
 
-const DashboardScreen = ({ navigation }) => {
+type Props = {
+    navigation: NavigationScreenProp<NavigationState>;
+};
+
+type Content = {
+    id: number;
+    title: string;
+};
+
+const DashboardScreen: React.FC<Props> = ({ navigation }) => {
     const [userData, setUserData] = useState({
         name: 'John Doe',
         progress: 0.5,
         achievements: ['Achievement 1', 'Achievement 2'],
-        // Other user data fields...
     });
     const [refreshing, setRefreshing] = useState(false);
     const [contentRecommendations, setContentRecommendations] = useState([
         { id: 1, title: 'Content 1' },
         { id: 2, title: 'Content 2' },
-        // Other content recommendations...
     ]);
 
-    const onRecommendationClick = (content) => {
+    const onRecommendationClick = (content: Content) => {
         navigation.navigate('ContentDetail', { title: content.title });
     };
 
     const onRefresh = () => {
-        // Refresh logic here
         console.log('Refreshed!');
     };
 
@@ -40,7 +49,7 @@ const DashboardScreen = ({ navigation }) => {
                 {Platform.OS === 'android' ? (
                     <ProgressBarAndroid styleAttr="Horizontal" progress={userData.progress} indeterminate={false} />
                 ) : (
-                    <ProgressViewIOS progress={userData.progress} />
+                    <ProgressView progress={userData.progress} />
                 )}
 
                 <View style={styles.achievements}>
@@ -59,7 +68,7 @@ const DashboardScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 ))}
             </View>
-            
+
             <Button
                 title="Go to Course Details"
                 onPress={() => navigation.navigate('CourseDetails')}
