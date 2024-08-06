@@ -17,7 +17,7 @@ const RegistrationScreen: React.FC<Props> = ({ navigation }) => {
             await createUserWithEmailAndPassword(auth, email, password);
             navigation.navigate('Home');
         } catch (error) {
-            Alert.alert('Registration Failed', error.message);
+            Alert.alert('Registration Failed', (error as Error).message);
         }
     };
 

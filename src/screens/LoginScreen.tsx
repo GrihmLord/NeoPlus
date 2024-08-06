@@ -16,7 +16,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             navigation.navigate('Home');
-        } catch (error) {
+        } catch (error: any) {
             Alert.alert('Login Failed', error.message);
         }
     };
