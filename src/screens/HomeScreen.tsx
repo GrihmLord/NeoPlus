@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
     navigation: NavigationProp<any>;
@@ -9,61 +10,69 @@ type Props = {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <View>
-                    <Text style={styles.greeting}>Hi Marquez,</Text>
-                    <Text style={styles.subHeader}>this is your homepage</Text>
-                </View>
-                <View style={styles.headerIcons}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-                        <Icon name="notifications-outline" size={25} color="#000" />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.profileIcon}>
-                        <Icon name="person-outline" size={25} color="#000" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.feed}>
-                <View style={styles.feedItem}>
-                    <Image style={styles.feedImage} source={{ uri: 'https://via.placeholder.com/300' }} />
-                    <Text style={styles.feedTitle}>Market collapse during pandemic</Text>
-                    <Text style={styles.feedDescription}>Lorem ipsum dolor sit amet...</Text>
-                    <View style={styles.feedIcons}>
-                        <Icon name="heart-outline" size={20} color="#000" />
-                        <Icon name="chatbubble-outline" size={20} color="#000" style={styles.feedIcon} />
-                        <Icon name="share-outline" size={20} color="#000" style={styles.feedIcon} />
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollView}>
+                <View style={styles.header}>
+                    <View>
+                        <Text style={styles.greeting}>Hi Marquez,</Text>
+                        <Text style={styles.subHeader}>Welcome back</Text>
+                    </View>
+                    <View style={styles.headerIcons}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Notifications')} style={styles.iconButton}>
+                            <Ionicons name="notifications-outline" size={24} color="#4F8EF7" />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={styles.iconButton}>
+                            <Ionicons name="person-outline" size={24} color="#4F8EF7" />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
-                <View style={styles.feedItem}>
-                    <Image style={styles.feedImage} source={{ uri: 'https://via.placeholder.com/300' }} />
-                    <Text style={styles.feedTitle}>Another news title</Text>
-                    <Text style={styles.feedDescription}>Lorem ipsum dolor sit amet...</Text>
-                    <View style={styles.feedIcons}>
-                        <Icon name="heart-outline" size={20} color="#000" />
-                        <Icon name="chatbubble-outline" size={20} color="#000" style={styles.feedIcon} />
-                        <Icon name="share-outline" size={20} color="#000" style={styles.feedIcon} />
-                    </View>
+                <View style={styles.feed}>
+                    {[1, 2, 3].map((item) => (
+                        <View key={item} style={styles.feedItem}>
+                            <Image style={styles.feedImage} source={{ uri: `https://picsum.photos/300/200?random=${item}` }} />
+                            <View style={styles.feedContent}>
+                                <Text style={styles.feedTitle}>Market trends during pandemic</Text>
+                                <Text style={styles.feedDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Text>
+                                <View style={styles.feedIcons}>
+                                    <TouchableOpacity style={styles.feedIconButton}>
+                                        <Ionicons name="heart-outline" size={20} color="#4F8EF7" />
+                                        <Text style={styles.feedIconText}>Like</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.feedIconButton}>
+                                        <Ionicons name="chatbubble-outline" size={20} color="#4F8EF7" />
+                                        <Text style={styles.feedIconText}>Comment</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.feedIconButton}>
+                                        <Ionicons name="share-outline" size={20} color="#4F8EF7" />
+                                        <Text style={styles.feedIconText}>Share</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        </View>
+                    ))}
                 </View>
-            </View>
+            </ScrollView>
 
             <View style={styles.navbar}>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-                    <Icon name="home-outline" size={30} color="#000" />
+                <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Home')}>
+                    <Ionicons name="home" size={24} color="#4F8EF7" />
+                    <Text style={styles.navButtonText}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
-                    <Icon name="notifications-outline" size={30} color="#000" />
+                <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Explore')}>
+                    <Ionicons name="search" size={24} color="#6c757d" />
+                    <Text style={styles.navButtonText}>Explore</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-                    <Icon name="settings-outline" size={30} color="#000" />
+                <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Notifications')}>
+                    <Ionicons name="notifications-outline" size={24} color="#6c757d" />
+                    <Text style={styles.navButtonText}>Notifications</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-                    <Icon name="person-outline" size={30} color="#000" />
+                <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Profile')}>
+                    <Ionicons name="person-outline" size={24} color="#6c757d" />
+                    <Text style={styles.navButtonText}>Profile</Text>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
+        </SafeAreaView>
     );
 };
 
@@ -128,6 +137,19 @@ const styles = StyleSheet.create({
     feedIcon: {
         marginLeft: 15,
     },
+    feedContent: {
+        padding: 10,
+    },
+    feedIconButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    feedIconText: {
+        fontSize: 12,
+        marginTop: 4,
+        color: '#4F8EF7',
+    },
     navbar: {
         flexDirection: 'row',
         justifyContent: 'space-around',
@@ -135,6 +157,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderTopWidth: 1,
         borderColor: '#e9ecef',
+    },
+    scrollView: {
+        flex: 1,
+    },
+    navButton: {
+        alignItems: 'center',
+    },
+    navButtonText: {
+        color: '#4F8EF7',
+        marginTop: 5,
+    },
+    iconButton: {
+        padding: 8,
     },
 });
 

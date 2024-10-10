@@ -1,19 +1,58 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, RefreshControl, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
+import { createApi } from 'unsplash-js';
+
+// Initialize Unsplash API (replace 'YOUR_ACCESS_KEY' with your actual Unsplash access key)
+const unsplash = createApi({
+  accessKey: 'YOUR_ACCESS_KEY'
+});
 
 type Props = {
     navigation: NavigationProp<any>;
 };
 
 const ProfileScreen: React.FC<Props> = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const [galleryItems, setGalleryItems] = useState([
+        { id: 1, title: 'AI Ethics in Practice', type: 'Article', image: '' },
+        { id: 2, title: 'Quantum Computing: A New Era', type: 'Paper', image: '' },
+        { id: 3, title: 'Climate Change: Global Impact', type: 'Article', image: '' },
+        { id: 4, title: 'Neural Networks Optimization', type: 'Paper', image: '' },
+        { id: 5, title: 'Renewable Energy Solutions', type: 'Article', image: '' },
+        { id: 6, title: 'Blockchain in Healthcare', type: 'Paper', image: '' },
+    ]);
+
+    useEffect(() => {
+        fetchImages();
+    }, []);
+
+    const fetchImages = async () => {
+        const updatedItems = await Promise.all(galleryItems.map(async (item) => {
+            const result = await unsplash.photos.getRandom({ query: item.title, orientation: 'landscape' });
+            const response = Array.isArray(result.response) ? result.response[0] : result.response;
+            return { ...item, image: response?.urls?.small || '' };
+        }));
+        setGalleryItems(updatedItems);
+    };
+
+    const onRefresh = React.useCallback(() => {
+        setRefreshing(true);
+        fetchImages().then(() => setRefreshing(false));
+    }, []);
+
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView 
+            style={styles.container}
+            refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+        >
             <View style={styles.header}>
                 <Image 
                     style={styles.profileImage}
-                    source={{ uri: 'https://via.placeholder.com/150' }} // Replace with actual profile image URL
+                    source={{ uri: 'https://example.com/profile-image.jpg' }}
                 />
                 <Text style={styles.name}>Joaquin Marquez</Text>
                 <Text style={styles.role}>Creative Director</Text>
@@ -22,7 +61,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.rating}>4.7/5.0</Text>
                 </View>
                 <Text style={styles.bio}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
+                    Passionate creative director with a flair for innovative design solutions.
                 </Text>
                 <View style={styles.followContainer}>
                     <Text style={styles.followCount}>2,564</Text>
@@ -36,7 +75,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
                 <Text style={styles.aliasTitle}>ALIAS</Text>
                 <Image 
                     style={styles.aliasImage}
-                    source={{ uri: 'https://via.placeholder.com/100' }} // Replace with actual alias image URL
+                    source={{ uri: 'https://example.com/alias-image.jpg' }}
                 />
                 <Text style={styles.aliasHandle}>@alansamson</Text>
                 <View style={styles.ratingContainer}>
@@ -48,20 +87,6 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.followLabel}>FOLLOWERS</Text>
                     <Text style={styles.followCount}>784</Text>
                     <Text style={styles.followLabel}>FOLLOWING</Text>
-                </View>
-            </View>
-
-            <View style={styles.walletSection}>
-                <Text style={styles.walletTitle}>WALLET</Text>
-                <Text style={styles.credits}>13</Text>
-                <Text style={styles.creditsLabel}>AVAILABLE CREDITS</Text>
-                <View style={styles.walletButtons}>
-                    <TouchableOpacity style={styles.walletButton}>
-                        <Text style={styles.walletButtonText}>BOOST</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.walletButton}>
-                        <Text style={styles.walletButtonText}>BUY CREDITS</Text>
-                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -99,33 +124,41 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
                 </View>
             </View>
 
+            <View style={styles.publicationsSection}>
+                <Text style={styles.sectionTitle}>MY PUBLICATIONS</Text>
+                <View style={styles.publicationsGrid}>
+                    {galleryItems.map((item) => (
+                        <View key={item.id} style={styles.publicationItem}>
+                            <Image 
+                                style={styles.publicationImage} 
+                                source={{ uri: item.image || `https://picsum.photos/300/200?random=${item.id}` }} 
+                            />
+                            <View style={styles.publicationContent}>
+                                <Text style={styles.publicationTitle}>{item.title}</Text>
+                                <Text style={styles.publicationType}>{item.type}</Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+            </View>
+
             <View style={styles.settingsSection}>
                 <Text style={styles.settingsTitle}>ACCOUNT SETTINGS</Text>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Basic account settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Privacy Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Safety Setting</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Subscription Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Notifications Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Content Filtration Settings</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Preferences</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.settingsItem}>
-                    <Text style={styles.settingsText}>Help Center</Text>
-                </TouchableOpacity>
+                {['Basic account settings', 'Privacy Settings', 'Safety Setting', 'Subscription Settings', 
+                'Notifications Settings', 'Content Filtration Settings', 'Preferences', 'Help Center'].map((item, index) => (
+                    <TouchableOpacity key={`setting-${index}`} style={styles.settingsItem}>
+                        <Text style={styles.settingsText}>{item}</Text>
+                        <Icon name="chevron-forward" size={20} color="#34495e" />
+                    </TouchableOpacity>
+                ))}
             </View>
+
+            <TouchableOpacity 
+                style={styles.editProfileButton}
+                onPress={() => navigation.navigate('EditProfile')}
+            >
+                <Text style={styles.editProfileButtonText}>Edit Profile</Text>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
@@ -206,39 +239,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#fff',
     },
-    walletSection: {
-        backgroundColor: '#ecf0f1',
-        padding: 20,
-        alignItems: 'center',
-    },
-    walletTitle: {
-        fontSize: 18,
-        color: '#34495e',
-        marginBottom: 10,
-    },
-    credits: {
-        fontSize: 24,
-        color: '#34495e',
-        fontWeight: 'bold',
-    },
-    creditsLabel: {
-        fontSize: 14,
-        color: '#34495e',
-        marginBottom: 10,
-    },
-    walletButtons: {
-        flexDirection: 'row',
-    },
-    walletButton: {
-        backgroundColor: '#8e44ad',
-        padding: 10,
-        margin: 5,
-        borderRadius: 5,
-    },
-    walletButtonText: {
-        color: '#fff',
-        fontSize: 14,
-    },
     analyticsSection: {
         padding: 20,
     },
@@ -276,6 +276,50 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#34495e',
     },
+    publicationsSection: {
+        padding: 20,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        color: '#34495e',
+        marginBottom: 10,
+        fontWeight: 'bold',
+    },
+    publicationsGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    publicationItem: {
+        width: (Dimensions.get('window').width - 60) / 2,
+        marginBottom: 20,
+        backgroundColor: '#ffffff',
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+        elevation: 3,
+    },
+    publicationImage: {
+        width: '100%',
+        height: 120,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    publicationContent: {
+        padding: 10,
+    },
+    publicationTitle: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#34495e',
+        marginBottom: 5,
+    },
+    publicationType: {
+        fontSize: 12,
+        color: '#7f8c8d',
+    },
     settingsSection: {
         padding: 20,
     },
@@ -285,6 +329,9 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     settingsItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingVertical: 15,
         borderBottomWidth: 1,
         borderColor: '#ecf0f1',
@@ -292,6 +339,18 @@ const styles = StyleSheet.create({
     settingsText: {
         fontSize: 16,
         color: '#34495e',
+    },
+    editProfileButton: {
+        backgroundColor: '#3498db',
+        padding: 15,
+        borderRadius: 5,
+        margin: 20,
+        alignItems: 'center',
+    },
+    editProfileButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 
