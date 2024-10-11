@@ -12,6 +12,7 @@ import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 import UserProfileScreen from './screens/UserProfileScreen';
+import ExploreScreen from './screens/ExploreScreen';
 import { RootStackParamList } from './Navigation/types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -31,6 +32,7 @@ const App: React.FC = () => {
                 <Stack.Screen name="Profile" component={ProfileScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+                <Stack.Screen name="Explore" component={ExploreScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

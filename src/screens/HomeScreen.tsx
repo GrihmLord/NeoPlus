@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView, RefreshControl } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,9 +9,45 @@ type Props = {
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
+    interface FeedItem {
+        id: number;
+        title: string;
+        description: string;
+        likes: number;
+        comments: number;
+    }
+    const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
+
+    useEffect(() => {
+        fetchFeedItems();
+    }, []);
+
+    const fetchFeedItems = () => {
+        // Simulating API call
+        setTimeout(() => {
+            setFeedItems([
+                { id: 1, title: 'Market trends during pandemic', description: 'Lorem ipsum...', likes: 15, comments: 5 },
+                { id: 2, title: 'New technology breakthroughs', description: 'Dolor sit amet...', likes: 20, comments: 8 },
+                { id: 3, title: 'Global economic outlook', description: 'Consectetur adipiscing...', likes: 10, comments: 3 },
+            ]);
+        }, 1000);
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        fetchFeedItems();
+        setRefreshing(false);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
+            <ScrollView 
+                style={styles.scrollView}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.greeting}>Hi Marquez,</Text>
@@ -28,20 +64,20 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
                 </View>
 
                 <View style={styles.feed}>
-                    {[1, 2, 3].map((item) => (
-                        <View key={item} style={styles.feedItem}>
-                            <Image style={styles.feedImage} source={{ uri: `https://picsum.photos/300/200?random=${item}` }} />
+                    {feedItems.map((item) => (
+                        <View key={item.id} style={styles.feedItem}>
+                            <Image style={styles.feedImage} source={{ uri: `https://picsum.photos/300/200?random=${item.id}` }} />
                             <View style={styles.feedContent}>
-                                <Text style={styles.feedTitle}>Market trends during pandemic</Text>
-                                <Text style={styles.feedDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</Text>
+                                <Text style={styles.feedTitle}>{item.title}</Text>
+                                <Text style={styles.feedDescription}>{item.description}</Text>
                                 <View style={styles.feedIcons}>
                                     <TouchableOpacity style={styles.feedIconButton}>
                                         <Ionicons name="heart-outline" size={20} color="#4F8EF7" />
-                                        <Text style={styles.feedIconText}>Like</Text>
+                                        <Text style={styles.feedIconText}>{item.likes}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.feedIconButton}>
                                         <Ionicons name="chatbubble-outline" size={20} color="#4F8EF7" />
-                                        <Text style={styles.feedIconText}>Comment</Text>
+                                        <Text style={styles.feedIconText}>{item.comments}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={styles.feedIconButton}>
                                         <Ionicons name="share-outline" size={20} color="#4F8EF7" />

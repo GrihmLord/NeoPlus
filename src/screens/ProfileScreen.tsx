@@ -30,9 +30,14 @@ const ProfileScreen: React.FC<Props> = ({ navigation }) => {
 
     const fetchImages = async () => {
         const updatedItems = await Promise.all(galleryItems.map(async (item) => {
-            const result = await unsplash.photos.getRandom({ query: item.title, orientation: 'landscape' });
+            const query = `${item.title} ${item.type.toLowerCase()} cover`;
+            const result = await unsplash.photos.getRandom({ 
+                query, 
+                orientation: 'landscape',
+                contentFilter: 'high'
+            });
             const response = Array.isArray(result.response) ? result.response[0] : result.response;
-            return { ...item, image: response?.urls?.small || '' };
+            return { ...item, image: response?.urls?.regular || '' };
         }));
         setGalleryItems(updatedItems);
     };

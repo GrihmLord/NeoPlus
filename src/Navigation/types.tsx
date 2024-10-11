@@ -2,28 +2,18 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 export type RootStackParamList = {
+  Login: undefined;
   Home: undefined;
   Dashboard: undefined;
   Notifications: undefined;
   Settings: undefined;
-  AchievementDetail: { title: string };
-  ContentDetail: { title: string };
-  CourseDetails: {
-    course: {
-      title: string;
-      instructor?: string;
-      duration: number;
-      modules: number;
-      rating: number;
-      progress?: number;
-      description: string;
-      enrolled: boolean;
-    };
-  };
-  Login: undefined;
+  AchievementDetail: { achievementId: string };
+  ContentDetail: { contentId: string };
+  CourseDetails: { courseId: string };
   Profile: undefined;
   Registration: undefined;
-  UserProfile: undefined;
+  UserProfile: { userId: string };
+  Explore: undefined; // Add this line
 };
 
 export type ContentDetailScreenRouteProp = RouteProp<RootStackParamList, 'ContentDetail'>;
